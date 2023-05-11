@@ -69,6 +69,8 @@ defmodule Nostrum.Api.Ratelimiter do
         GenServer.reply(original_from || from, do_request(request, conn))
 
       time ->
+        Logger.warning("We have to wait to send #{inspect(self())}")
+
         Task.start(fn ->
           wait_for_timeout(request, time, original_from || from)
         end)
